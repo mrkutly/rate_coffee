@@ -19,6 +19,5 @@ defmodule RateCoffee.Bevs.Coffee do
     |> validate_required([:name])
     |> foreign_key_constraint(:region_id)
     |> foreign_key_constraint(:roaster_id)
-    |> IO.inspect()
   end
 end

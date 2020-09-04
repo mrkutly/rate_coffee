@@ -5,16 +5,16 @@ defmodule RateCoffeeWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", RateCoffeeWeb do
+  scope "/" do
     pipe_through :api
+
+    forward("/graphiql", Absinthe.Plug.GraphiQL,
+      schema: RateCoffeeWeb.Schema,
+      socket: RateCoffeeWeb.UserSocket
+    )
+
+    forward("/api", Absinthe.Plug, schema: RateCoffeeWeb.Schema)
   end
-
-  forward("/graphiql", Absinthe.Plug.GraphiQL,
-    schema: RateCoffeeWeb.Schema,
-    socket: RateCoffeeWeb.UserSocket
-  )
-
-  forward("/api", Absinthe.Plug, schema: RateCoffeeWeb.Schema)
 
   # Enables LiveDashboard only for development
   #
