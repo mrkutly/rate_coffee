@@ -103,19 +103,6 @@ defmodule RateCoffee.Bevs do
   end
 
   @doc """
-  Returns the list of coffees.
-
-  ## Examples
-
-      iex> list_coffees()
-      [%Coffee{}, ...]
-
-  """
-  def list_coffees do
-    Repo.all(Coffee)
-  end
-
-  @doc """
   Gets a single coffee.
 
   Raises `Ecto.NoResultsError` if the Coffee does not exist.
@@ -230,5 +217,54 @@ defmodule RateCoffee.Bevs do
     %Review{}
     |> Review.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Returns a list of all coffees filtered by name, roaster, and region parameters
+  and ordered by an order parameter.
+  If no name paramter is given, returns all coffees.
+  If no order paramter is given, defaults to ascending order by name.
+
+  ## Examples
+
+      iex> list_coffees(%{name: "reuben"})
+      [%Item{name: "Reuben", id: 1}]
+
+      iex> list_coffees(%{})
+      [%Item{name: "Reuben", id: 1}, %Item{name: "Cubana", id: 2}]
+
+  """
+  def list_coffees(filters) do
+    filters
+    |> Enum.reduce(Coffee, fn
+      {_, nil}, query ->
+        query
+
+      {:order, order}, query ->
+        query |> order_by({^order, :name})
+
+      {:filter, filter}, query ->
+        query |> filter_with(filter)
+    end)
+    |> Repo.all()
+  end
+
+  defp filter_with(query, filter) do
+    Enum.reduce(filter, query, fn
+      {:added_after, date}, query ->
+        from(q in query, where: q.added_on >= ^date)
+
+      {:added_before, date}, query ->
+        from(q in query, where: q.added_on <= ^date)
+
+      {:name, name}, query ->
+        from(q in query, where: ilike(q.name, ^"%#{name}%"))
+
+      {:region, region_id}, query ->
+        from(q in query, where: q.region_id == ^region_id)
+
+      {:roaster, roaster_id}, query ->
+        from(q in query, where: q.roaster_id == ^roaster_id)
+    end)
   end
 end
