@@ -6,7 +6,7 @@ defmodule RateCoffee.Bevs do
   import Ecto.Query, warn: false
   alias RateCoffee.Repo
 
-  alias RateCoffee.Bevs.{Coffee, Region, Roaster}
+  alias RateCoffee.Bevs.{Coffee, Region, Review, Roaster}
 
   @doc """
   Returns the list of regions.
@@ -211,6 +211,24 @@ defmodule RateCoffee.Bevs do
   def create_roaster(attrs \\ %{}) do
     %Roaster{}
     |> Roaster.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a review.
+
+  ## Examples
+
+      iex> create_review(%{field: value})
+      {:ok, %Review{}}
+
+      iex> create_review(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_review(attrs \\ %{}) do
+    %Review{}
+    |> Review.changeset(attrs)
     |> Repo.insert()
   end
 end

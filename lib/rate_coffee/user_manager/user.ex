@@ -9,6 +9,7 @@ defmodule RateCoffee.UserManager.User do
     field :thumbnail, :string
     field :username, :string
 
+    has_many(:reviews, RateCoffee.Bevs.Review)
     timestamps()
   end
 
