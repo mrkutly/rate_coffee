@@ -2,6 +2,7 @@ defmodule RateCoffeeWeb.Schema do
   use Absinthe.Schema
   alias RateCoffeeWeb.Schema.Middleware
   import_types(__MODULE__.BevsTypes)
+  import_types(__MODULE__.UserManagerTypes)
 
   def middleware(middleware, _field, %{identifier: :mutation}) do
     middleware ++ [Middleware.ChangesetErrors]
@@ -17,6 +18,7 @@ defmodule RateCoffeeWeb.Schema do
 
   mutation do
     import_fields(:bevs_mutations)
+    import_fields(:user_manager_mutations)
   end
 
   @desc "An error encountered trying to persist input"

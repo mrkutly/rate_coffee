@@ -12,7 +12,7 @@ database_url =
     """
 
 guardian_secret =
-  System.get_env("GUARDIAN_SECREN") ||
+  System.get_env("GUARDIAN_SECRET") ||
     raise """
     environment variable GUARDIAN_SECREN is missing.
     You can generate one with mix guardian.gen.secret

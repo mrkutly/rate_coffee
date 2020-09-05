@@ -9,7 +9,7 @@ config :rate_coffee, RateCoffee.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
-config :rate_coffee, RateCoffee.UserManager.Guardian,
+config :rate_coffee, RateCoffee.UserManager.Auth,
   issuer: "rate_coffee",
   secret_key: "WrUU3sBqq36YIkBbOO9RStYzyMssYerfw46SP5kJ/aB6uMqJBuSsVvG1x6/PWZXh"
 
