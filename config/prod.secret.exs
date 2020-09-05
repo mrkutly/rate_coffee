@@ -18,7 +18,7 @@ guardian_secret =
     You can generate one with mix guardian.gen.secret
     """
 
-config :rate_coffee, RateCoffee.UserManager.Guardian,
+config :rate_coffee, RateCoffee.UserManager.Auth,
   issuer: "rate_coffee",
   secret_key: guardian_secret
 

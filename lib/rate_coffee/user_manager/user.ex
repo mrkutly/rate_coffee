@@ -5,7 +5,8 @@ defmodule RateCoffee.UserManager.User do
 
   schema "users" do
     field :email, :string
-    field :password, :string
+    field :password_hash, :string
+    field :password, :string, virtual: true
     field :thumbnail, :string
     field :username, :string
     field :verification_code, :string
@@ -24,13 +25,11 @@ defmodule RateCoffee.UserManager.User do
     |> put_verification_code()
   end
 
-  defp put_password_hash(
-         %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
-       ) do
-    change(changeset, Argon2.add_hash(password))
+  def put_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, password_hash: Argon2.hash_pwd_salt(password))
   end
 
-  defp put_password_hash(changeset), do: changeset
+  def put_password_hash(changeset), do: changeset
 
   defp put_verification_code(%Ecto.Changeset{valid?: true} = changeset) do
     verification_code = RateCoffee.Helpers.random_byte_string(24)

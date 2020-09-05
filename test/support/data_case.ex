@@ -24,6 +24,7 @@ defmodule RateCoffee.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import RateCoffee.DataCase
+      import RateCoffee.Factory
     end
   end
 

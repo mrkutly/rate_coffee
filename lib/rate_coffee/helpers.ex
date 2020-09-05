@@ -1,14 +1,15 @@
 defmodule RateCoffee.Helpers do
   import Ecto.Changeset, only: [change: 2]
 
-  def put_slug(struct, attrs) do
-    slug =
-      attrs.name
-      |> String.downcase()
-      |> String.split()
-      |> Enum.join("-")
+  def put_slug(struct, %{name: name}) do
+    change(struct, slug: slugify(name))
+  end
 
-    change(struct, slug: slug)
+  def slugify(string) do
+    string
+    |> String.downcase()
+    |> String.split()
+    |> Enum.join("-")
   end
 
   def random_byte_string(length) do

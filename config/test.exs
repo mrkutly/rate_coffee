@@ -18,5 +18,9 @@ config :rate_coffee, RateCoffeeWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :rate_coffee, RateCoffee.UserManager.Auth,
+  issuer: "rate_coffee",
+  secret_key: "WrUU3sBqq36YIkBbOO9RStYzyMssYerfw46SP5kJ/aB6uMqJBuSsVvG1x6/PWZXh"
+
 # Print only warnings and errors during test
 config :logger, level: :warn

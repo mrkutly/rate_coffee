@@ -123,7 +123,7 @@ defmodule RateCoffee.UserManager do
         {:error, :invalid_credentials}
 
       user ->
-        if Argon2.verify_pass(plain_text_password, user.password) do
+        if Argon2.verify_pass(plain_text_password, user.password_hash) do
           {:ok, user}
         else
           {:error, :invalid_credentials}
