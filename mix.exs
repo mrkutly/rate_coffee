@@ -38,6 +38,8 @@ defmodule RateCoffee.MixProject do
       {:absinthe_plug, "~> 1.5.0"},
       {:argon2_elixir, "~> 2.3.0"},
       {:ecto_sql, "~> 3.4"},
+      {:ex_machina, "~> 2.4", only: :test},
+      {:faker, "~> 0.14", only: :test},
       {:guardian, "~> 2.1.1"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},

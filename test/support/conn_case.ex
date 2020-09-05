@@ -23,6 +23,7 @@ defmodule RateCoffeeWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import RateCoffeeWeb.ConnCase
+      import RateCoffee.Factory
 
       alias RateCoffeeWeb.Router.Helpers, as: Routes
 
