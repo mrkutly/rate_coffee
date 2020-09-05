@@ -16,20 +16,10 @@ defmodule RateCoffee.Bevs.Coffee do
   @doc false
   def changeset(coffee, attrs) do
     coffee
-    |> create_slug(attrs)
+    |> RateCoffee.Helpers.put_slug(attrs)
     |> cast(attrs, [:region_id, :name, :image, :roaster_id, :slug])
     |> validate_required([:name, :slug])
     |> foreign_key_constraint(:region_id)
     |> foreign_key_constraint(:roaster_id)
-  end
-
-  def create_slug(coffee, attrs) do
-    slug =
-      attrs.name
-      |> String.downcase()
-      |> String.split()
-      |> Enum.join("-")
-
-    Map.put(coffee, :slug, slug)
   end
 end

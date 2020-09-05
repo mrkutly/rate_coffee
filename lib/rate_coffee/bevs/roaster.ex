@@ -18,18 +18,8 @@ defmodule RateCoffee.Bevs.Roaster do
   @doc false
   def changeset(roaster, attrs) do
     roaster
-    |> create_slug(attrs)
+    |> RateCoffee.Helpers.put_slug(attrs)
     |> cast(attrs, [:city, :state, :country, :name, :image, :slug])
     |> validate_required([:city, :country, :name])
-  end
-
-  def create_slug(roaster, attrs) do
-    slug =
-      attrs.name
-      |> String.downcase()
-      |> String.split()
-      |> Enum.join("-")
-
-    Map.put(roaster, :slug, slug)
   end
 end
