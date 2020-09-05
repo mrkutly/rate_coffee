@@ -16,8 +16,8 @@ defmodule RateCoffee.Bevs.Coffee do
   @doc false
   def changeset(coffee, attrs) do
     coffee
+    |> cast(attrs, [:region_id, :name, :image, :roaster_id])
     |> RateCoffee.Helpers.put_slug(attrs)
-    |> cast(attrs, [:region_id, :name, :image, :roaster_id, :slug])
     |> validate_required([:name, :slug])
     |> foreign_key_constraint(:region_id)
     |> foreign_key_constraint(:roaster_id)

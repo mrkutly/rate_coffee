@@ -18,8 +18,8 @@ defmodule RateCoffee.Bevs.Roaster do
   @doc false
   def changeset(roaster, attrs) do
     roaster
+    |> cast(attrs, [:city, :state, :country, :name, :image])
     |> RateCoffee.Helpers.put_slug(attrs)
-    |> cast(attrs, [:city, :state, :country, :name, :image, :slug])
-    |> validate_required([:city, :country, :name])
+    |> validate_required([:city, :country, :name, :slug])
   end
 end

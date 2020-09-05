@@ -3,7 +3,7 @@ defmodule RateCoffee.Repo.Migrations.AddSlugToCoffees do
 
   def change do
     alter table(:coffees) do
-      add :slug, :string
+      add :slug, :string, null: false
     end
 
     create index(:coffees, :slug)
