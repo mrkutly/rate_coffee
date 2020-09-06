@@ -120,6 +120,7 @@ defmodule RateCoffee.Bevs do
     Coffee
     |> with_average_rating()
     |> Repo.get!(id)
+    |> parse_average()
   end
 
   @doc """
@@ -252,6 +253,16 @@ defmodule RateCoffee.Bevs do
     end)
     |> with_average_rating()
     |> Repo.all()
+    |> Enum.map(&parse_average/1)
+  end
+
+  defp parse_average(%{average_rating: average} = coffee) do
+    average_rating =
+      average
+      |> Decimal.round()
+      |> Decimal.to_integer()
+
+    %Coffee{coffee | average_rating: average_rating}
   end
 
   defp with_average_rating(query) do
