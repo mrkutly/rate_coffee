@@ -6,6 +6,7 @@ defmodule RateCoffee.Bevs.Coffee do
     field :image, :string
     field :name, :string
     field :slug, :string
+    field :average_rating, :integer, virtual: true
     belongs_to(:region, RateCoffee.Bevs.Region)
     belongs_to(:roaster, RateCoffee.Bevs.Roaster)
     has_many(:reviews, RateCoffee.Bevs.Review)

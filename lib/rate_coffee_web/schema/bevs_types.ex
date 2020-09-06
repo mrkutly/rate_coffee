@@ -23,15 +23,16 @@ defmodule RateCoffeeWeb.Schema.BevsTypes do
   end
 
   object :coffee do
-    field(:id, :id)
+    field(:id, non_null(:id))
     field(:image, :string)
-    field(:name, :string)
+    field(:name, non_null(:string))
+    field(:average_rating, :integer)
   end
 
   input_object :coffee_filter do
-    field(:name, :string)
-    field(:roaster_id, :id)
-    field(:region_id, :id)
+    field(:name, non_null(:string))
+    field(:roaster_id, non_null(:id))
+    field(:region_id, non_null(:id))
   end
 
   input_object :coffee_input do

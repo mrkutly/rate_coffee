@@ -116,7 +116,11 @@ defmodule RateCoffee.Bevs do
       ** (Ecto.NoResultsError)
 
   """
-  def get_coffee!(id), do: Repo.get!(Coffee, id)
+  def get_coffee!(id) do
+    Coffee
+    |> with_average_rating()
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a coffee.
@@ -246,7 +250,21 @@ defmodule RateCoffee.Bevs do
       {:filter, filter}, query ->
         query |> filter_with(filter)
     end)
+    |> with_average_rating()
     |> Repo.all()
+  end
+
+  defp with_average_rating(query) do
+    avg_query =
+      from r in Review,
+        group_by: r.coffee_id,
+        select: %{coffee_id: r.coffee_id, average_rating: avg(r.rating)}
+
+    from(q in query,
+      join: r in subquery(avg_query),
+      on: r.coffee_id == q.id,
+      select: %{q | average_rating: r.average_rating}
+    )
   end
 
   defp filter_with(query, filter) do

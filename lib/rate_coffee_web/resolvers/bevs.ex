@@ -7,7 +7,8 @@ defmodule RateCoffeeWeb.Resolvers.Bevs do
     end
   end
 
-  def get_coffees(_, args, _) do
+  def get_coffees(_, args, res) do
+    IO.inspect(res)
     {:ok, Bevs.list_coffees(args)}
   end
 
