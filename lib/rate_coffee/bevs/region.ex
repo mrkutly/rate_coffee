@@ -1,6 +1,7 @@
 defmodule RateCoffee.Bevs.Region do
-  use Ecto.Schema
   import Ecto.Changeset
+  use Ecto.Schema
+  use RateCoffee.Dataloader
 
   schema "regions" do
     field :country, :string

@@ -117,6 +117,7 @@ defmodule RateCoffee.Bevs do
 
   """
   def get_coffee!(id), do: Repo.get!(Coffee, id)
+  def get_roaster!(id), do: Repo.get!(Roaster, id)
 
   @doc """
   Creates a coffee.
@@ -237,6 +238,21 @@ defmodule RateCoffee.Bevs do
   def list_coffees(filters) do
     filters
     |> Enum.reduce(Coffee, fn
+      {_, nil}, query ->
+        query
+
+      {:order, order}, query ->
+        query |> order_by({^order, :name})
+
+      {:filter, filter}, query ->
+        query |> filter_with(filter)
+    end)
+    |> Repo.all()
+  end
+
+  def list_roasters(filters) do
+    filters
+    |> Enum.reduce(Roaster, fn
       {_, nil}, query ->
         query
 

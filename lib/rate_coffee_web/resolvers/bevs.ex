@@ -19,6 +19,18 @@ defmodule RateCoffeeWeb.Resolvers.Bevs do
     end
   end
 
+  def get_roasters(_, args, _) do
+    {:ok, Bevs.list_roasters(args)}
+  end
+
+  def get_roaster(_, %{id: id}, _) do
+    try do
+      {:ok, Bevs.get_roaster!(id)}
+    rescue
+      _ -> {:error, "No roaster found with id #{id}."}
+    end
+  end
+
   def get_average_rating_for_coffees(_, coffee_ids) do
     coffee_ids
     |> Bevs.get_average_rating_for_coffees()

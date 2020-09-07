@@ -1,6 +1,7 @@
 defmodule RateCoffee.Bevs.Coffee do
-  use Ecto.Schema
   import Ecto.Changeset
+  use Ecto.Schema
+  use RateCoffee.Dataloader
 
   schema "coffees" do
     field :image, :string
@@ -12,14 +13,6 @@ defmodule RateCoffee.Bevs.Coffee do
     has_many(:reviews, RateCoffee.Bevs.Review)
 
     timestamps()
-  end
-
-  def data() do
-    Dataloader.Ecto.new(RateCoffee.Repo, query: &query/2)
-  end
-
-  def query(queryable, _params) do
-    queryable
   end
 
   @doc false

@@ -1,7 +1,7 @@
 defmodule RateCoffeeWeb.Schema.BevsTypes do
   use Absinthe.Schema.Notation
   alias RateCoffeeWeb.Resolvers
-  alias RateCoffee.Bevs.{Coffee, Roaster}
+  alias RateCoffee.Bevs.{Coffee, Region, Roaster}
   import Absinthe.Resolution.Helpers
 
   object :bevs_queries do
@@ -14,6 +14,17 @@ defmodule RateCoffeeWeb.Schema.BevsTypes do
     field :coffee, :coffee, description: "One coffee by id" do
       arg(:id, :id)
       resolve(&Resolvers.Bevs.get_coffee/3)
+    end
+
+    field :roasters, list_of(:roaster), description: "Filtered list of all roasters" do
+      arg(:filter, :roaster_filter)
+      arg(:order, type: :sort_order, default_value: :asc)
+      resolve(&Resolvers.Bevs.get_roasters/3)
+    end
+
+    field :roaster, :roaster, description: "One roaster by id" do
+      arg(:id, :id)
+      resolve(&Resolvers.Bevs.get_roaster/3)
     end
   end
 
@@ -30,6 +41,7 @@ defmodule RateCoffeeWeb.Schema.BevsTypes do
     field(:name, non_null(:string))
     field(:slug, non_null(:string))
 
+    field :region, non_null(:region), resolve: dataloader(Region)
     field :roaster, non_null(:roaster), resolve: dataloader(Roaster)
 
     field :average_rating, :decimal do
@@ -41,18 +53,35 @@ defmodule RateCoffeeWeb.Schema.BevsTypes do
     end
   end
 
+  object :region do
+    field(:country, non_null(:string))
+    field(:id, non_null(:id))
+    field(:name, non_null(:string))
+    field :coffees, list_of(:coffee), resolve: dataloader(Coffee)
+  end
+
   object :roaster do
+    field(:city, non_null(:string))
+    field(:country, non_null(:string))
     field(:id, non_null(:id))
     field(:image, :string)
     field(:name, non_null(:string))
     field(:slug, non_null(:string))
+    field(:state, :string)
     field :coffees, list_of(:coffee), resolve: dataloader(Coffee)
   end
 
   input_object :coffee_filter do
-    field(:name, non_null(:string))
-    field(:roaster_id, non_null(:id))
-    field(:region_id, non_null(:id))
+    field(:name, :string)
+    field(:roaster_id, :id)
+    field(:region_id, :id)
+  end
+
+  input_object :roaster_filter do
+    field(:city, :string)
+    field(:country, :string)
+    field(:name, :string)
+    field(:state, :string)
   end
 
   input_object :coffee_input do
