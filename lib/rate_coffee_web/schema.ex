@@ -2,8 +2,22 @@ defmodule RateCoffeeWeb.Schema do
   use Absinthe.Schema
   alias Absinthe.Blueprint.Input
   alias RateCoffeeWeb.Schema.Middleware
+  alias RateCoffee.Bevs.{Roaster}
+
   import_types(__MODULE__.BevsTypes)
   import_types(__MODULE__.UserManagerTypes)
+
+  def context(ctx) do
+    loader =
+      Dataloader.new()
+      |> Dataloader.add_source(Roaster, Roaster.data())
+
+    Map.put(ctx, :loader, loader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
+  end
 
   def middleware(middleware, _field, %{identifier: :mutation}) do
     middleware ++ [Middleware.ChangesetErrors]

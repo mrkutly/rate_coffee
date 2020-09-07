@@ -15,6 +15,14 @@ defmodule RateCoffee.Bevs.Roaster do
     timestamps()
   end
 
+  def data() do
+    Dataloader.Ecto.new(RateCoffee.Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
+  end
+
   @doc false
   def changeset(roaster, attrs) do
     roaster

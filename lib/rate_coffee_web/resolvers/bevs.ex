@@ -1,7 +1,5 @@
 defmodule RateCoffeeWeb.Resolvers.Bevs do
   alias RateCoffee.Bevs
-  alias RateCoffee.Repo
-  import Ecto.Query
 
   def create_coffee(_, %{input: input}, _) do
     with {:ok, coffee} <- Bevs.create_coffee(input) do
