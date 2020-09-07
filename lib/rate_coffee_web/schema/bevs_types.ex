@@ -1,7 +1,7 @@
 defmodule RateCoffeeWeb.Schema.BevsTypes do
   use Absinthe.Schema.Notation
   alias RateCoffeeWeb.Resolvers
-  alias RateCoffee.Bevs
+  alias RateCoffee.Bevs.{Coffee, Roaster}
   import Absinthe.Resolution.Helpers
 
   object :bevs_queries do
@@ -30,7 +30,7 @@ defmodule RateCoffeeWeb.Schema.BevsTypes do
     field(:name, non_null(:string))
     field(:slug, non_null(:string))
 
-    field :roaster, non_null(:roaster), resolve: dataloader(Bevs.Roaster)
+    field :roaster, non_null(:roaster), resolve: dataloader(Roaster)
 
     field :average_rating, :decimal do
       resolve(fn coffee, _, _ ->
@@ -46,6 +46,7 @@ defmodule RateCoffeeWeb.Schema.BevsTypes do
     field(:image, :string)
     field(:name, non_null(:string))
     field(:slug, non_null(:string))
+    field :coffees, list_of(:coffee), resolve: dataloader(Coffee)
   end
 
   input_object :coffee_filter do
