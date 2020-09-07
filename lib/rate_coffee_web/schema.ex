@@ -2,7 +2,8 @@ defmodule RateCoffeeWeb.Schema do
   use Absinthe.Schema
   alias Absinthe.Blueprint.Input
   alias RateCoffeeWeb.Schema.Middleware
-  alias RateCoffee.Bevs.{Coffee, Region, Roaster}
+  alias RateCoffee.UserManager.User
+  alias RateCoffee.Bevs.{Coffee, Region, Review, Roaster}
 
   import_types(__MODULE__.BevsTypes)
   import_types(__MODULE__.UserManagerTypes)
@@ -12,7 +13,9 @@ defmodule RateCoffeeWeb.Schema do
       Dataloader.new()
       |> Dataloader.add_source(Coffee, Coffee.data())
       |> Dataloader.add_source(Region, Region.data())
+      |> Dataloader.add_source(Review, Review.data())
       |> Dataloader.add_source(Roaster, Roaster.data())
+      |> Dataloader.add_source(User, User.data())
 
     Map.put(ctx, :loader, loader)
   end

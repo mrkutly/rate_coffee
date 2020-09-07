@@ -1,5 +1,6 @@
 defmodule RateCoffee.UserManager.User do
   use Ecto.Schema
+  use RateCoffee.Dataloader
   import Ecto.Changeset
   alias Argon2
 

@@ -1,6 +1,8 @@
 defmodule RateCoffeeWeb.Schema.UserManagerTypes do
   use Absinthe.Schema.Notation
   alias RateCoffeeWeb.Resolvers
+  alias RateCoffee.Bevs.Review
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   object :user_manager_mutations do
     field :login, :session do
@@ -20,5 +22,6 @@ defmodule RateCoffeeWeb.Schema.UserManagerTypes do
     field(:id, non_null(:id))
     field(:username, non_null(:string))
     field(:thumbnail, non_null(:string))
+    field :reviews, list_of(:review), resolve: dataloader(Review)
   end
 end

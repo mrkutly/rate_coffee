@@ -1,5 +1,6 @@
 defmodule RateCoffee.Bevs.Review do
   use Ecto.Schema
+  use RateCoffee.Dataloader
   import Ecto.Changeset
 
   schema "reviews" do
