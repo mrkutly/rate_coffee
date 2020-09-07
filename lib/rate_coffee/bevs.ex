@@ -116,12 +116,7 @@ defmodule RateCoffee.Bevs do
       ** (Ecto.NoResultsError)
 
   """
-  def get_coffee!(id) do
-    Coffee
-    |> with_average_rating()
-    |> Repo.get!(id)
-    |> parse_average()
-  end
+  def get_coffee!(id), do: Repo.get!(Coffee, id)
 
   @doc """
   Creates a coffee.
@@ -251,31 +246,25 @@ defmodule RateCoffee.Bevs do
       {:filter, filter}, query ->
         query |> filter_with(filter)
     end)
-    |> with_average_rating()
     |> Repo.all()
-    |> Enum.map(&parse_average/1)
   end
 
-  defp parse_average(%{average_rating: average} = coffee) do
-    average_rating =
-      average
-      |> Decimal.round()
-      |> Decimal.to_integer()
+  @doc """
+  Returns the average rating of coffees.
 
-    %Coffee{coffee | average_rating: average_rating}
-  end
+  ## Examples
 
-  defp with_average_rating(query) do
-    avg_query =
+      iex> get_average_rating_for_coffees([1])
+      [%{coffee_id: 1, average_rating: #Decimal<89.5000000000000000>}]
+  """
+  def get_average_rating_for_coffees(coffee_ids) do
+    query =
       from r in Review,
+        where: r.coffee_id in ^coffee_ids,
         group_by: r.coffee_id,
         select: %{coffee_id: r.coffee_id, average_rating: avg(r.rating)}
 
-    from(q in query,
-      join: r in subquery(avg_query),
-      on: r.coffee_id == q.id,
-      select: %{q | average_rating: r.average_rating}
-    )
+    Repo.all(query)
   end
 
   defp filter_with(query, filter) do

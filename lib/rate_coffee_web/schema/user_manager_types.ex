@@ -4,7 +4,7 @@ defmodule RateCoffeeWeb.Schema.UserManagerTypes do
 
   object :user_manager_mutations do
     field :login, :session do
-      arg(:email, non_null(:string))
+      arg(:email, non_null(:email))
       arg(:password, non_null(:string))
       resolve(&Resolvers.UserManager.login/3)
     end
@@ -16,7 +16,7 @@ defmodule RateCoffeeWeb.Schema.UserManagerTypes do
   end
 
   object :user do
-    field(:email, non_null(:string))
+    field(:email, non_null(:email))
     field(:id, non_null(:id))
     field(:username, non_null(:string))
     field(:thumbnail, non_null(:string))

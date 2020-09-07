@@ -1,5 +1,6 @@
 defmodule RateCoffeeWeb.Schema do
   use Absinthe.Schema
+  alias Absinthe.Blueprint.Input
   alias RateCoffeeWeb.Schema.Middleware
   import_types(__MODULE__.BevsTypes)
   import_types(__MODULE__.UserManagerTypes)
@@ -30,5 +31,30 @@ defmodule RateCoffeeWeb.Schema do
   enum :sort_order do
     value(:asc)
     value(:desc)
+  end
+
+  scalar :email do
+    parse(fn input ->
+      with %Input.String{value: value} <- input,
+           {true, email} <- {Regex.match?(~r(^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$), value), value} do
+        {:ok, email}
+      else
+        _ -> :error
+      end
+    end)
+
+    serialize(& &1)
+  end
+
+  scalar :decimal do
+    parse(fn
+      %{value: value}, _ ->
+        Decimal.parse(value)
+
+      _, _ ->
+        :error
+    end)
+
+    serialize(&to_string/1)
   end
 end
